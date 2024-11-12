@@ -12,7 +12,16 @@ pipeline {
       }
     }
     
-stage('Run Semgrep Scan') {
+    stage('Retrieve Rules') {
+      steps {
+        script {
+          // Retrieve rules from Semgrep registry (this command lists the rules and saves them in rules.json)
+          sh '/var/lib/jenkins/.local/bin/semgrep --config=auto --json > rules.json'
+        }
+      }
+    }
+
+    stage('Run Semgrep Scan') {
       steps {
         script {
           // Run the Semgrep scan in CI mode, which includes both code and supply chain scans
